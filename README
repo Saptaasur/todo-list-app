@@ -1,0 +1,97 @@
+# To-Do List Application
+Overview of Features
+User Authentication:
+
+Registration: Users can register with a username, email, and password.
+Login: Users can log in using their email and password after the user has been verified.
+Password Reset: Users can request a password reset via email.
+Task Management:
+Create Tasks: Users can create new tasks with a title, description, category, due date, and status.
+Edit Tasks: Users can edit the details of existing tasks.
+Delete Tasks: Users can delete tasks.
+View Tasks: Users can view a list of their tasks.
+Dashboard: Task Overview: Display tasks with options to edit or delete.
+Responsive Design: The application is optimized for mobile devices, ensuring a user-friendly experience across different screen sizes.
+## Project Setup
+1. Setup Instructions
+1.1. Database Setup
+Create Database:
+
+Open XAMPP and start Apache and MySQL.
+Go to http://localhost/phpmyadmin.
+Create a new database named todo_db.
+Create Tables:
+
+Use the following SQL queries to create the necessary tables:
+sql
+Copy code
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+);
+
+CREATE TABLE tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description TEXT,
+    category VARCHAR(50),
+    due_date DATE,
+    status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+1.2. Configuration
+Database Configuration:
+
+Edit backend/config/db.php with your database credentials:
+php
+Copy code
+<?php
+class Database {
+    private $host = "localhost";
+    private $db_name = "todo_db";
+    private $username = "root";
+    private $password = "";
+    public $conn;
+
+    public function getConnection() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $exception) {
+            echo "Connection error: " . $exception->getMessage();
+        }
+        return $this->conn;
+    }
+}
+?>
+PHP Dependencies:
+
+If using Composer, install dependencies with:
+bash
+Copy code
+composer install
+
+### Prerequisites
+
+2. Prerequisites
+XAMPP: Ensure XAMPP is installed on your machine. It includes Apache, MySQL, and PHP.
+PHP: Make sure PHP is installed (bundled with XAMPP).
+MySQL: MySQL is also included with XAMPP.
+
+### Setup Instructions
+3.1 If using Composer, install dependencies with:
+bash
+Copy code
+composer install
+3.2. Starting the Server
+Ensure Apache and MySQL are running in XAMPP.
+Place your project folder (todo-list-app) in the htdocs directory of XAMPP.
+Access your project via http://localhost/todo-list-app/backend/views/dashboard.php.
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/Saptasur/todo-list-app.git
